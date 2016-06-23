@@ -2344,4 +2344,26 @@ class UserAccessManager
         $this->_aPostUrls[$sUrl] = $oPost->ID;
         return $sUrl;
     }
+
+    /**
+     * Filter for Yoast SEO Plugin
+     *
+     * Hides the url from the sitemap if the user is not allowed
+     *
+     * @param string $url
+     * @param string $type
+     * @param object $object
+     * @return false|string
+     */
+
+    function wp_seo_url($url, $type, $object)
+    {
+        $uaManager = new UserAccessManager();
+        $handler = $uaManager->getAccessHandler();
+
+        if($handler->checkObjectAccess($type, $object->ID)){
+            return $url;
+        }
+        return false;
+    }
 }
